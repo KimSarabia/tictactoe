@@ -1,14 +1,14 @@
-var winners = new Array();
-var player1Selections = new Array();
-var player2Selections = new Array();
-var numberOfPlayers = 2;
-var currentPlayer = 0;
+var champion = new Array();
+var playerOneMove = new Array();
+var playerTwoMove = new Array();
+var playerCount = 2;
+var playerTurn = 0;
 var move = 0;
 var points1 = 0;
 var points2 = 0;
 var size = 3;
 
-function drawBoard() {
+function makeBoard() {
     var Parent = document.getElementById("game");
     var counter = 1;
     
@@ -25,16 +25,16 @@ function drawBoard() {
             col.innerHTML = counter;
 
             var handler = function(e) {
-                if (currentPlayer == 0) {
+                if (playerTurn == 0) {
                     this.innerHTML = "X";
-                    player1Selections.push(parseInt(this.id));
-                    player1Selections.sort(function(a, b) { return a - b });
+                    playerOneMove.push(parseInt(this.id));
+                    playerOneMove.sort(function(a, b) { return a - b });
                 }
 
                 else {
                     this.innerHTML = "O";
-                    player2Selections.push(parseInt(this.id));
-                    player2Selections.sort(function(a, b) { return a - b });
+                    playerTwoMove.push(parseInt(this.id));
+                    playerTwoMove.sort(function(a, b) { return a - b });
                 }
 
                 move++;
@@ -42,7 +42,7 @@ function drawBoard() {
 
                 if (isWin)
                 {
-                    if(currentPlayer == 0)
+                    if(playerTurn == 0)
                         points1++;
                     else
                         points2++;
@@ -51,15 +51,15 @@ function drawBoard() {
                     document.getElementById("player2").innerHTML = points2;
 
                     reset();
-                    drawBoard();
+                    makeBoard();
                 }
 
                 else
                 {
-                    if (currentPlayer == 0)
-                        currentPlayer = 1;
+                    if (playerTurn == 0)
+                        playerTurn = 1;
                     else
-                        currentPlayer = 0;
+                        playerTurn = 0;
                     this.removeEventListener('click', arguments.callee);
                 }
             };
@@ -78,21 +78,21 @@ function drawBoard() {
 
 function reset()
 {
-    currentPlayer = 0;
-    player1Selections = new Array();
-    player2Selections = new Array();
+    playerTurn = 0;
+    playerOneMove = new Array();
+    playerTwoMove = new Array();
 }
 
 function loadAnswers()
 {
-    winners.push([1, 2, 3]);
-    winners.push([4, 5, 6]);
-    winners.push([7, 8, 9]);
-    winners.push([1, 4, 7]);
-    winners.push([2, 5, 8]);
-    winners.push([3, 6, 9]);
-    winners.push([1, 5, 9]);
-    winners.push([3, 5, 7]);
+    champion.push([1, 2, 3]);
+    champion.push([4, 5, 6]);
+    champion.push([7, 8, 9]);
+    champion.push([1, 4, 7]);
+    champion.push([2, 5, 8]);
+    champion.push([3, 6, 9]);
+    champion.push([1, 5, 9]);
+    champion.push([3, 5, 7]);
 }
 
 
@@ -105,15 +105,15 @@ function checkWinner() {
     var win = false;
     var playerSelections = new Array();
 
-    if (currentPlayer == 0)
-        playerSelections = player1Selections;
+    if (playerTurn == 0)
+        playerSelections = playerOneMove;
     else
-    playerSelections = player2Selections;
+    playerSelections = playerTwoMove;
     
     if (playerSelections.length >= size) {
         
-        for (i = 0; i < winners.length; i++) {
-            var sets = winners[i];
+        for (i = 0; i < champion.length; i++) {
+            var sets = champion[i];
             var setFound = true;
             
             for (r = 0; r < sets.length; r++) {
@@ -142,4 +142,4 @@ function checkWinner() {
     return win;
 } 
 
-window.onload = drawBoard;
+window.onload = makeBoard;
